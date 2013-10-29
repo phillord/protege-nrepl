@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+  
+  <!--extension id="toolmenu1" 
+             point="org.protege.editor.core.application.EditorKitMenuAction">
+    <name value="Example Menu 1"/>
+    <path value="org.protege.editor.owl.menu.tools/SlotG-A"/>
+    <toolTip value="This menu appears in the tools menu"/>
+    <class value="org.protege.example.menu.ToolsMenu1"/>
+    <editorKitId value="any"/>
+  </extension-->  
+  
+  <extension id="nrepl-menu" 
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="NREPL"/>
+        <path value="org.protege.editor.owl.menu.tools/SlotG-A"/>
+        <toolTip value="This menu appears in the tools menu"/>
+        <class value="uk.org.russet.protege.NreplMenu"/>
+        <editorKitId value="any"/>
+  </extension>
+
+</plugin>
