@@ -64,11 +64,21 @@ that they were added."
 
 (def start-server-hook (make-hook))
 
-(defn start-server
-  ([manager port]
-     (binding [protege.model/*owl-model-manager* manager]
-       (run-hook start-server-hook)
-       (clojure.tools.nrepl.server/start-server :port port))))
+(def servers (atom {}))
 
-(defn stop-server [server]
+
+(defn start-server
+  ([editorkit port]
+     (binding [protege.model/*owl-editor-kit* editorkit
+               protege.model/*owl-work-space*
+               (.getOWLWorkspace editorkit)
+               protege.model/*owl-model-manager*
+               (.getOWLModelManager editorkit)]
+       (run-hook start-server-hook)
+       (let [server
+             (clojure.tools.nrepl.server/start-server :port port)]
+         (swap! servers assoc editorkit server)))))
+
+(defn stop-server [editorkit server]
+  (swap! servers dissoc editorkit)
   (clojure.tools.nrepl.server/stop-server server))

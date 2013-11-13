@@ -17,8 +17,20 @@
 
 (ns protege.model)
 
-(def ^{:dynamic true}
+(def ^{:dynamic true
+       :doc "The OWLModelManager for the Protege Instance from which the REPL
+is launched."}
   *owl-model-manager* nil)
+
+(def ^{:dynamic true
+       :doc "The OWLEditorKit for the Protege Instance from which the REPL is
+launched."}
+  *owl-editor-kit* nil)
+
+(def ^{:dynamic true
+       :doc "The OWLWorkspace for the Protege Instance from which the REPL is
+launched."}
+  *owl-work-space* nil)
 
 (def auto-connect-on-default (ref false))
 
@@ -28,8 +40,13 @@
   ([o]
      (.setActiveOntology *owl-model-manager* o)))
 
-(defn kill-import-warning []
-  (.setMissingImportHandler
-   *owl-model-manager*
-   (proxy [org.protege.editor.owl.model.MissingImportHandler] []
-     (getDocumentIRI [iri]))))
+
+(defn selected-object
+  ([workspace]
+     (-> workspace
+         .getOWLSelectionModel
+         .getSelectedObject))
+  ([workspace entity]
+     (-> workspace
+         .getOWLSelectionModel
+         (.setSelectedObject entity))))

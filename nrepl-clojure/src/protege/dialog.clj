@@ -14,28 +14,28 @@
     (actionPerformed [event]
       (f event))))
 
-(defn start-server-action [manager connect disconnect status event]
+(defn start-server-action [editorkit connect disconnect status event]
   (dosync
    (let [s (protege.nrepl/start-server
-            manager
+            editorkit
             @last-port)]
-     (alter servers merge {manager s})
+     (alter servers merge {editorkit s})
      (.setEnabled disconnect true)
      (.setEnabled connect false)
      (.setText status
                 (str "Connected on port: " @last-port) )
      (alter last-port inc))))
 
-(defn stop-server-action [manager connect disconnect status event]
+(defn stop-server-action [editorkit connect disconnect status event]
   (dosync
-   (let [s (get @servers manager)]
-     (alter servers dissoc manager)
+   (let [s (get @servers editorkit)]
+     (alter servers dissoc editorkit)
      (.setEnabled connect true)
      (.setEnabled disconnect false)
      (.setText status "Disconnected")
-     (protege.nrepl/stop-server s))))
+     (protege.nrepl/stop-server editorkit s))))
 
-(defn new-dialog-panel [manager]
+(defn new-dialog-panel [editorkit]
   (let [pn (JPanel.)
         ;; this one takes so a text box with next available port
         ;; and a status bar saying what, er, the status is
@@ -51,7 +51,7 @@
         disconnect (JButton. "Disconnect")
         connect-fn
         (partial start-server-action
-                 manager
+                 editorkit
                  connect disconnect
                  status)]
     (.addActionListener connect
@@ -61,7 +61,7 @@
       (.addActionListener
        (action-listener
         (partial stop-server-action
-                 manager connect disconnect
+                 editorkit connect disconnect
                  status))))
 
     (when @protege.model/auto-connect-on-default
