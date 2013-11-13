@@ -14,7 +14,68 @@ with the [Tawny-OWL](https://github.com/phillord/tawny-owl) library;
 currently, the release version of Protege and Tawny use different versions of
 the OWL API, or a specialized build of Protege is needed.
 
-This software is in ALPHA release.
+## Usage
+
+Install the plugin as a normal Protege plugin. This adds a single menu item
+into "Tools", called NREPL, which can be used to launch a REPL for the current
+Protege workspace.
+
+The `protege.model` Clojure namespace provides a number of different vars,
+dynamically scoped to the current workspace which you can use to affect the
+running Protege instance (if you don't want to do this, there isn't much point
+in launching a REPL within Protege!), as well as some utility functions.
+
+As Clojure itself and the nrepl server, protege-nrepl packages
+[pomegranate](https://github.com/cemerick/pomegranate) which enables the
+addition of new dependencies or directories to the classpath in the existing
+JVM. The easiest way to do this is to use
+[lein-sync](https://github.com/phillord/lein-sync) which creates the relevant
+function calls from a leiningen project.
+
+## Init
+
+protege-nrepl loads an init file when launching clojure (this happens when the
+NREPL menu item is clicked and *not* when Protege is launched. This file is
+found at `~/.protege-nrepl/init.clj`, or equivalent on different OSes.
+
+I use the following which loads tawny-owl, adds protege support to it, and
+turns off two dialogs which make little sense when using Protege as a viewer.
+
+    ;; force loading of tawny
+    (cemerick.pomegranate/add-dependencies :coordinates '[[uk.org.russet/tawny-owl "1.0-SNAPSHOT"]]
+                                          :repositories (merge cemerick.pomegranate.aether/maven-central
+                                              {"clojars" "http://clojars.org/repo"}))
+    ;; and monkey patch the thing
+    (require 'tawny.protege-nrepl)
+
+
+    ;; the import warning is pain -- if we create a new ontology, protege tries to
+    ;; load it for us! This has to happen for every repl, so put it onto the hook
+    ;; which runs after protege dynamic bindings are set up. Likewise the "you
+    ;; haven't saved stuff" warning.
+    (protege.nrepl/add-hook protege.nrepl/start-server-hook
+                            #(do
+                               (tawny.protege-nrepl/swap-dirty-close-warning)
+                               (tawny.protege-nrepl/kill-import-warning)))
+
+    ;; initing the dialog takes ages -- so auto connect
+    (dosync (ref-set protege.model/auto-connect-on-default true))
+
+
+## Use with Tawny-OWL
+
+Currently Tawny uses the OWL API version 3.4.8 and depends on (one!) feature
+introduced in it, while Protege uses version 3.4.2. So, if you use tawny
+inside Protege errors will occasionally happen (if you use datatypes
+essentially). Unfortunately, upgrading Protege to 3.4.8 requires a slight
+patch to Protege.
+
+I have built an  **unsupported**, **pre-release** version of Protege with
+protege-nrepl (and [protege-tawny](https://github.com/phillord/protege-tawny))
+installed, which is accessible from
+[here](http://purl.org/ontolink/protege-nrepl). Please don't ask the Protege
+team for help with this! This should be a stop-gap solution; we hope that
+protege-nrepl will work in a standard Protege install. 
 
 
 ## Mailing List
