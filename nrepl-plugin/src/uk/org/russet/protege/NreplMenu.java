@@ -72,7 +72,7 @@ public class NreplMenu extends ProtegeOWLAction {
                     Var newDialog = RT.var("protege.dialog", "new-dialog-panel");
                     cp.removeAll();
                     JPanel dialog = (JPanel)newDialog.
-                        invoke(getOWLModelManager());
+                        invoke(getOWLEditorKit());
 
                     cp.add(dialog);
                     frame.pack();
