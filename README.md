@@ -38,25 +38,16 @@ protege-nrepl loads an init file when launching clojure (this happens when the
 NREPL menu item is clicked and *not* when Protege is launched. This file is
 found at `~/.protege-nrepl/init.clj`, or equivalent on different OSes.
 
-I use the following which loads tawny-owl, adds protege support to it, and
-turns off two dialogs which make little sense when using Protege as a viewer.
+I use the following which loads tawny-protege, which links between the core
+protege data structures and tawny. It also turns off two dialogs which make
+little sense when using Protege as a viewer.
 
     ;; force loading of tawny
-    (cemerick.pomegranate/add-dependencies :coordinates '[[uk.org.russet/tawny-owl "1.0-SNAPSHOT"]]
+    (cemerick.pomegranate/add-dependencies :coordinates '[[uk.org.russet/tawny-protege "1.0"]]
                                           :repositories (merge cemerick.pomegranate.aether/maven-central
                                               {"clojars" "http://clojars.org/repo"}))
     ;; and monkey patch the thing
     (require 'tawny.protege-nrepl)
-
-
-    ;; the import warning is pain -- if we create a new ontology, protege tries to
-    ;; load it for us! This has to happen for every repl, so put it onto the hook
-    ;; which runs after protege dynamic bindings are set up. Likewise the "you
-    ;; haven't saved stuff" warning.
-    (protege.nrepl/add-hook protege.nrepl/start-server-hook
-                            #(do
-                               (tawny.protege-nrepl/swap-dirty-close-warning)
-                               (tawny.protege-nrepl/kill-import-warning)))
 
     ;; initing the dialog takes ages -- so auto connect
     (dosync (ref-set protege.model/auto-connect-on-default true))
