@@ -12,7 +12,7 @@ remotely.
 Although, it is not tied to it, Protege-Nrepl is being developed for use
 with the [Tawny-OWL](https://github.com/phillord/tawny-owl) library;
 currently, the release version of Protege and Tawny use different versions of
-the OWL API, or a specialized build of Protege is needed.
+the OWL API, so a specialized build of Protege is needed.
 
 ## Usage
 
@@ -38,35 +38,14 @@ protege-nrepl loads an init file when launching clojure (this happens when the
 NREPL menu item is clicked and *not* when Protege is launched. This file is
 found at `~/.protege-nrepl/init.clj`, or equivalent on different OSes.
 
-I use the following which loads tawny-protege, which links between the core
-protege data structures and tawny. It also turns off two dialogs which make
-little sense when using Protege as a viewer.
-
-    ;; force loading of tawny
-    (cemerick.pomegranate/add-dependencies :coordinates '[[uk.org.russet/tawny-protege "1.0"]]
-                                          :repositories (merge cemerick.pomegranate.aether/maven-central
-                                              {"clojars" "http://clojars.org/repo"}))
-    ;; and monkey patch the thing
-    (require 'tawny.protege-nrepl)
+My `init.clj` is shown in full at
+https://github.com/phillord/tawny-protege/README.md, and enables use with
+Tawny-OWL. This setting -- which autoconnects a nrepl once the dialog is
+started, is generally useful.
 
     ;; initing the dialog takes ages -- so auto connect
     (dosync (ref-set protege.model/auto-connect-on-default true))
 
-
-## Use with Tawny-OWL
-
-Currently Tawny uses the OWL API version 3.4.8 and depends on (one!) feature
-introduced in it, while Protege uses version 3.4.2. So, if you use tawny
-inside Protege errors will occasionally happen (if you use datatypes
-essentially). Unfortunately, upgrading Protege to 3.4.8 requires a slight
-patch to Protege.
-
-I have built an  **unsupported**, **pre-release** version of Protege with
-protege-nrepl (and [protege-tawny](https://github.com/phillord/protege-tawny))
-installed, which is accessible from
-[here](http://purl.org/ontolink/protege-nrepl). Please don't ask the Protege
-team for help with this! This should be a stop-gap solution; we hope that
-protege-nrepl will work in a standard Protege install. 
 
 
 ## Mailing List
