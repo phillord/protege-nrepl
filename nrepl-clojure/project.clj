@@ -8,4 +8,6 @@
   :url "https://github.com/phillord/protege-nrepl"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/tools.nrepl "0.2.3"]
+                 [edu.stanford.protege/org.protege.editor.core.application 
+                  "5.0.0-beta-05-SNAPSHOT"]
                  [com.cemerick/pomegranate "0.2.0"]])
