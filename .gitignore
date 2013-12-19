@@ -1,6 +1,7 @@
 /nrepl-clojure/.lein-repl-history
 /nrepl-clojure/target
 /nrepl-plugin/build
+/nrepl-plugin/target
 /nrepl-clojure/pom.xml
 /nrepl-clojure/src/protege/temp.clj
 /nrepl-clojure/test/nrepl_clojure/core_test.clj
@@ -8,3 +9,5 @@
 /nrepl-plugin/lib/nrepl-clojure.jar
 /nrepl-plugin/src/.svn/all-wcprops
 /nrepl-plugin/src/.svn/entries
+/nrepl-clojure/.lein-failures
+/nrepl-clojure/pom.xml.asc
