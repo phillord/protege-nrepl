@@ -18,7 +18,6 @@
 
 	<packaging>bundle</packaging>
 
-
 	<dependencies>
           <dependency>
             <groupId>uk.org.russet</groupId>
@@ -26,20 +25,14 @@
             <version>1.0.0</version>
           </dependency>
           
-	  <!--dependency>
-	    <groupId>edu.stanford.protege</groupId>
-	    <artifactId>org.protege.common</artifactId>
-	    <version>5.0.0-beta-05-SNAPSHOT</version>
-            <scope>provided</scope>
-	  </dependency-->
           
+          <!-- protege dependencies -->
           <dependency>
 	    <groupId>edu.stanford.protege</groupId>
 	    <artifactId>org.protege.editor.core.application</artifactId>
 	    <version>5.0.0-beta-05-SNAPSHOT</version>
             <scope>provided</scope>
           </dependency>
-          
           <dependency>
 	    <groupId>edu.stanford.protege</groupId>
             <artifactId>org.protege.editor.owl</artifactId>
@@ -50,6 +43,26 @@
 
 	<build>
 	  <plugins>
+            
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>exec-maven-plugin</artifactId>
+              <version>1.1</version>
+              <executions>
+                <execution>
+                  <id>compile-with-lein</id>
+                  <phase>initialize</phase>
+                  <goals>
+                    <goal>exec</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <executable>lein</executable>
+                <commandlineArgs>install</commandlineArgs>
+                <workingDirectory>../nrepl-clojure</workingDirectory>
+              </configuration>
+            </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
@@ -68,18 +81,22 @@
 		<instructions>
 		  <Bundle-ClassPath>.</Bundle-ClassPath>
 		  <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
-		  <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
+		  <Bundle-Vendor>Phil Lord</Bundle-Vendor>
+                  <!-- We exclude a bunch of things here which otherwise get
+                  into the import list and are not provided from anywhere. How
+                  do they get there? No idea! -->
 		  <Import-Package>
                     !javax.servlet*,!junit.*,!org.junit*,!org.apache.*,
-                    !org.testng.*,!sun.misc.*,org.protege.editor.*,
-                    org.protege.editor.core,org.protege.editor.core.ui.workspace,
-                    org.protege.editor.owl.model,org.protege.editor.core.editorkit,
-                    org.semanticweb.owlapi.model,org.semanticweb.owlapi.io,
-                    org.semanticweb.owlapi.vocab,*
+                    !org.testng.*,!sun.misc.*,*
 		  </Import-Package>
-		  <Include-Resource>plugin.xml, {maven-resources}</Include-Resource>
+		  <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
                   <Embed-Transitive>true</Embed-Transitive>
                   <Embed-Dependency>*;scope=compile</Embed-Dependency>
+                  <Require-Bundle>
+                    org.protege.editor.core.application,
+                    org.protege.editor.owl,
+                    org.semanticweb.owl.owlapi
+                  </Require-Bundle>
 		</instructions>
 		<executions>
 		  <execution>
@@ -92,13 +109,6 @@
 		</executions>
 	      </configuration>
             </plugin>
-            <plugin>
-              <artifactId>maven-eclipse-plugin</artifactId>
-              <version>2.9</version>
-              <configuration>
-                <pde>true</pde>
-              </configuration>
-            </plugin>
-		</plugins>
+           </plugins>
 	</build>
 </project>
