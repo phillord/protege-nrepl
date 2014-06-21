@@ -6,9 +6,8 @@
   :scm {:url "https://github.com/phillord/protege-nrepl.git"
         :name "git"}
   :url "https://github.com/phillord/protege-nrepl"
-  :aot :all
-  :dependencies [[org.clojure/clojure "1.5.1"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/tools.nrepl "0.2.3"]
                  [edu.stanford.protege/org.protege.editor.core.application 
-                  "5.0.0-beta-05-SNAPSHOT"]
-                 [com.cemerick/pomegranate "0.2.0"]])
+                  "5.0.0-beta-16-SNAPSHOT"]
+                 [com.cemerick/pomegranate "0.3.0"]])

@@ -22,7 +22,7 @@
           <dependency>
             <groupId>uk.org.russet</groupId>
             <artifactId>nrepl-clojure</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0-SNAPSHOT</version>
           </dependency>
           
           
@@ -30,13 +30,13 @@
           <dependency>
 	    <groupId>edu.stanford.protege</groupId>
 	    <artifactId>org.protege.editor.core.application</artifactId>
-	    <version>5.0.0-beta-05-SNAPSHOT</version>
+	    <version>5.0.0-beta-16-SNAPSHOT</version>
             <scope>provided</scope>
           </dependency>
           <dependency>
 	    <groupId>edu.stanford.protege</groupId>
             <artifactId>org.protege.editor.owl</artifactId>
-	    <version>5.0.0-beta-05-SNAPSHOT</version>
+	    <version>5.0.0-beta-16-SNAPSHOT</version>
             <scope>provided</scope>
           </dependency>
 	</dependencies>
@@ -44,7 +44,7 @@
 	<build>
 	  <plugins>
             
-            <plugin>
+            <!--plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>exec-maven-plugin</artifactId>
               <version>1.1</version>
@@ -58,11 +58,11 @@
                 </execution>
               </executions>
               <configuration>
-                <executable>lein</executable>
+                <executable>lein-2.1.1</executable>
                 <commandlineArgs>install</commandlineArgs>
                 <workingDirectory>../nrepl-clojure</workingDirectory>
               </configuration>
-            </plugin>
+            </plugin-->
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
