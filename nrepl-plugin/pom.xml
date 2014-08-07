@@ -26,6 +26,9 @@
           </dependency>
           
           
+
+          
+          
           <!-- protege dependencies -->
           <dependency>
 	    <groupId>edu.stanford.protege</groupId>
@@ -44,7 +47,7 @@
 	<build>
 	  <plugins>
             
-            <!--plugin>
+            <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>exec-maven-plugin</artifactId>
               <version>1.1</version>
@@ -56,13 +59,13 @@
                     <goal>exec</goal>
                   </goals>
                 </execution>
-              </executions>
+                </executions>
               <configuration>
-                <executable>lein-2.1.1</executable>
+              <executable>lein</executable>
                 <commandlineArgs>install</commandlineArgs>
                 <workingDirectory>../nrepl-clojure</workingDirectory>
               </configuration>
-            </plugin-->
+            </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
@@ -80,23 +83,35 @@
 	      <configuration>
 		<instructions>
 		  <Bundle-ClassPath>.</Bundle-ClassPath>
+                  <Bundle-Name>Protege NREPL</Bundle-Name>
+                  <Bundle-Description>Integrate with Protege through a Clojure Process</Bundle-Description>
 		  <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 		  <Bundle-Vendor>Phil Lord</Bundle-Vendor>
                   <!-- We exclude a bunch of things here which otherwise get
                   into the import list and are not provided from anywhere. How
-                  do they get there? No idea! -->
+                  do they get there? No idea! 
+                  
+                  We also have to include javax.swing.text.html.parser because
+                  it's used by cider-nrepl which breaks otherwise
+                  -->
 		  <Import-Package>
                     !javax.servlet*,!junit.*,!org.junit*,!org.apache.*,
-                    !org.testng.*,!sun.misc.*,*
+                    !org.testng.*,!sun.misc.*,
+                    *,
+                    <!--cider-nrepl-->
+                    <!-- javax.swing.text.html.parser, -->
+                    <!--tawny-->
+                    <!-- org.w3c.dom, -->
 		  </Import-Package>
+                  <DynamicImport-Package>*</DynamicImport-Package>
 		  <Include-Resource>plugin.xml,{maven-resources}</Include-Resource>
                   <Embed-Transitive>true</Embed-Transitive>
-                  <Embed-Dependency>*;scope=compile</Embed-Dependency>
-                  <Require-Bundle>
+                  <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+                  <!--Require-Bundle>
                     org.protege.editor.core.application,
                     org.protege.editor.owl,
-                    org.semanticweb.owl.owlapi
-                  </Require-Bundle>
+                    org.semanticweb.owl.owlapi,
+                  </Require-Bundle-->
 		</instructions>
 		<executions>
 		  <execution>
