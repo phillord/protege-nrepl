@@ -3,6 +3,9 @@
             [clojure.java.io]
             [protege.model]))
 
+
+(def nrepl-handler (ref clojure.tools.nrepl.server/default-handler))
+
 ;; borrowed from lein
 (defn getenv
   "Wrap System/getenv for testing purposes."
@@ -76,7 +79,9 @@ that they were added."
                (.getOWLModelManager editorkit)]
        (run-hook start-server-hook)
        (let [server
-             (clojure.tools.nrepl.server/start-server :port port)]
+             (clojure.tools.nrepl.server/start-server
+              :port port
+              :handler @nrepl-handler)]
          (swap! servers assoc editorkit server)))))
 
 (defn stop-server [editorkit server]
