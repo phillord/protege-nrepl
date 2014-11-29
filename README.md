@@ -14,6 +14,15 @@ with the [Tawny-OWL](https://github.com/phillord/tawny-owl) library;
 currently, the release version of Protege and Tawny use different versions of
 the OWL API, so a specialized build of Protege is needed.
 
+## Build
+
+Both maven and leiningen are required to build the plugin. To build,
+
+    cd nrepl-plugin
+    mvn install
+
+A small `build.sh` script is included which copies the jar file into protege.
+
 ## Usage
 
 Install the plugin as a normal Protege plugin. This adds a single menu item
@@ -45,7 +54,6 @@ started, is generally useful.
 
     ;; initing the dialog takes ages -- so auto connect
     (dosync (ref-set protege.model/auto-connect-on-default true))
-
 
 
 ## Mailing List

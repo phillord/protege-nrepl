@@ -11,7 +11,7 @@
 
 
         <groupId>uk.org.russet</groupId>
-	<artifactId>uk.org.russet.protege.nrepl-clojure</artifactId>
+	<artifactId>uk.org.russet.protege.nrepl</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<name>protege-nrepl</name> 
 	<description>Provide an NREPL client to use Clojure inside Protege</description>
